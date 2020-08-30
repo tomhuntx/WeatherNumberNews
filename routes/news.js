@@ -1,0 +1,1 @@
+//http://newsapi.org/v2/everything?q=query&sortBy=popularity&apiKey=2c81e38cd1b24b08aa59f06e934d5486

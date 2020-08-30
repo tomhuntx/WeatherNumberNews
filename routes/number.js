@@ -1,12 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const http = require('http');
-const cons = require('consolidate');
 
 var output = '';
 
 // Number router search
-router.get('/:number', function (req, res) {
+router.get('/num=:number', function (req, res) {
 
     // Set options
     const options = createOptions(req.params.number);
@@ -47,9 +46,9 @@ function createOptions(number) {
     var options = {
         host: 'numbersapi.com',
         port: 80,
-        path: '/'
+        path: '/' + number,
+        method: 'GET'    
     };
-    options.path += number;
 
     return options;
 }

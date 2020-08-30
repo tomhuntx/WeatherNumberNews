@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 const flickrRouter = require('./routes/flickr'); 
+const weatherRouter = require('./routes/weather'); 
 const numberRouter = require('./routes/number'); 
 
 var app = express();
@@ -35,6 +36,7 @@ app.use('/', indexRouter);
 
 // Search queries
 app.use('/search', flickrRouter);  
+app.use('/weather', weatherRouter);
 app.use('/number', numberRouter);  
 
 // Catch 404 and forward to error handler
@@ -42,7 +44,7 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-/* Off for debug
+/* Off for debug purposes
 // Error Handler
 app.use(function(err, req, res, next) {
   // render the error page
