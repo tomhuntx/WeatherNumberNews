@@ -11,9 +11,6 @@ const numberRouter = require('./routes/number');
 
 var app = express();
 
-// View engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'pug');
 
 // Replace pug with html
 var cons = require('consolidate');
@@ -28,6 +25,18 @@ app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, '/public')));
 
 
+/*
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({extended:true}))
+
+app.get('/numSearch', function(req, res){  
+  var text = req.query.num; //mytext is the name of your input box 
+  res.send('Your Text:' + text);  
+});  
+*/
+
+
 // Statis to ensure html works
 //app.use('/public',express.static(__dirname + '/public'));
 app.use(express.static('public/stylesheets'));
@@ -37,7 +46,7 @@ app.use('/', indexRouter);
 // Search queries
 app.use('/search', flickrRouter);  
 app.use('/weather', weatherRouter);
-app.use('/number', numberRouter);  
+app.use('/number', numberRouter);
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -52,5 +61,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 */
+
 
 module.exports = app;

@@ -51,16 +51,23 @@
     
 <section class="flex-column vh-main bg-sub">
 
-          <div class="d-flex justify-content-center align-items-center flex-grow-1 projectgap">
+   <div class="d-flex justify-content-center align-items-center flex-grow-1 projectgap">
     <span class="d-block title-colour h3">TFN Mashup</span>
   </div>
   <div class="d-flex justify-content-center align-items-center flex-grow-1">
       <div class="text-blog text-center">
           Enter your location: 
           <form action="weather/" method="get">
-              <input name="country" value="AU">
-              <input name="postcode" value="4000">
-              <button type="submit">Submit</button>
+            City: 
+            <input type="text" name="city" placeholder="Pick a city..." required/><br><br>
+            Country:
+            <input type="text" name="country" placeholder="Pick a country..." required/><br><br>
+            Units:
+            <input type="radio" id="c" name="units" value="M">
+            <label for="c">C</label>
+            <input type="radio" id="f" name="units" value="I">
+            <label for="f">F</label><br><br>
+            <button type="submit">Submit</button>
           </form>
       </div>
   </div>
@@ -71,15 +78,12 @@
   <div class="d-flex justify-content-center align-items-center flex-grow-1">
       <div class="text-blog text-center">
           Hello testing
-          <form action="number/" method="get">
-              <input type="number" name="num" value="0">
-              <button type="submit">Submit</button>
+          <form action="/number" method="get">
+              <input type="number" name="num" value="0" required />
+              <input type="submit" value="Submit" /> 
           </form>
       </div>
   </div>
-    
-
-    
 </section>
     
 <!-- Contact -->

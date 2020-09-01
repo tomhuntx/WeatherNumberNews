@@ -2,16 +2,16 @@ const express = require('express')
 const router = express.Router()
 const http = require('http');
 
-var output = '';
 
 // Number router search
-router.get('/num=:number', function (req, res) {
+router.get('/', function (req, res) {
 
     // Set options
-    const options = createOptions(req.params.number);
+    const options = createOptions(req.query.num);
     
     // Connect to numbersapi
     var numReq = http.request(options, function(numRes) {
+        var output = "";
 
         // Get the entire website and set it as the output
         numRes.on('data', function (chunk) {
@@ -57,4 +57,4 @@ function createPage(fact) {
     return fact;
 }
   
-module.exports = router
+module.exports = router;
