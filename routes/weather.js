@@ -10,14 +10,16 @@ var tempType = "C";
 // Get fact
 var fact = "Fact not found!";
 
+
 // Weather JSON search
-router.get('/', function (req, res) {
+router.get('/:country/:city/:units', function (req, res)  {
 
     // Set options
-    const options = createOptions(req.query.city, req.query.country, req.query.units);
+    const options = createOptions(req.params.city, req.params.country, req.params.units);
 
     // Connect to numbersapi
     const weatReq = http.request(options, function(waetRes) {
+
         var output = "";
 
         // Get the entire website and set it as the output
@@ -27,11 +29,13 @@ router.get('/', function (req, res) {
 
         // Create a page with its contents
         waetRes.on('end',function() {           
-            res.writeHead(waetRes.statusCode, {'content-type': 'text/html'});
+            //res.writeHead(waetRes.statusCode, {'content-type': 'text/html'});
 
             var temp = "";
 
-            if (req.query.city == "" || req.query.country == "") {
+            // Check if input is empty or whitespace
+            if (!req.params.city || !req.params.city.trim() || !req.params.country || 
+                !req.params.country.trim()) {
                 temp = -1;
             }
             else {
@@ -40,8 +44,6 @@ router.get('/', function (req, res) {
 
             // Check if the data was able to be parsed
             if (temp != -1) {
-                //const s = createPage(temp);
-
                 // Generate fact from temperature
                 NumberFactGenerator(temperature, temp, res);
             }
@@ -50,11 +52,14 @@ router.get('/', function (req, res) {
                 report = "There was a problem finding this location. " +
                          "Please try again with different keywords, such as \"USA\" instead of \"America\".";
                 temperature = 0;
+
+                res.send({ weather: report });
             }
 
-            // Debug: log the report
-            //console.log(report);
+            // Debug: log the weather report
+            //console.log("Weather:" report);
         }); 
+        
     });
 
     // Error handling
@@ -133,10 +138,10 @@ function parseTemperature(toparse) {
     s += temperature;
 
     if (tempType == "I") {
-        s += "&deg;F."
+        s += "°F."
     }
     else {
-        s += "&deg;C."
+        s += "°C."
     }
 
     // Save and return the result
@@ -149,20 +154,25 @@ function NumberFactGenerator(number, report, res) {
     const numOptions = createNumOptions(number);
     
     // Connect to numbersapi
-    var numReq = http.request(numOptions, function(numRes) {
+    const numReq = http.request(numOptions, function(numRes) {
         
         // Get the entire website and set it as the output
         numRes.on('data', function (chunk) {
 
             // Set fact
             fact = chunk;
-            console.log('Fact: ' + fact);
 
-            // Create the webpage
-            const s = createPage(report, fact);
+            // Debug: Log the fact
+            //console.log('Fact: ' + fact);
+
+            // Create the webpage (REMOVED)
+            //const s = createPage(report, fact);
 
             // Write the page and end the request
-            res.write(s);
+            
+            report = report + " " + fact;
+            
+            res.send({ weather: report });
             res.end();
         });
     });
@@ -183,6 +193,9 @@ function createPage(givenReport, fact) {
                 '<html><head><title>Weather Report</title></head>' +         
                 '<body>' + '<h2>Result</h2>' +         
                 givenReport + " " + fact + 
+                '<form action="/news" method="get">' +
+                `<input type="text" name="q" value="${fact}" required />` +
+                '<input type="submit" value="Submit" /></form>' +
                 '</body></html>';     
 
     return str; 

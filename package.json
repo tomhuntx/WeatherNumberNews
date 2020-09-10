@@ -13,9 +13,11 @@
     "express": "~4.16.1",
     "fs-js": "^1.0.6",
     "http-errors": "~1.6.3",
+    "jsdom": "^16.4.0",
     "morgan": "~1.9.1",
     "node-fetch": "^2.6.0",
     "pug": "2.0.0-beta11",
+    "serve-favicon": "^2.5.0",
     "swig": "^1.4.2",
     "url-exist": "^2.0.2"
   }

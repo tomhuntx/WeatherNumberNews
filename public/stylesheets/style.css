@@ -723,6 +723,28 @@ body {
     box-shadow: 1px 5px 6px var(--bg-main);
 }
 
+#hidden-frame {
+    display: none;
+}
+
+#fact {
+    border-radius: 25px;
+    border: 2px solid black;
+    padding: 20px; 
+    background: var(--bg-main);
+    font-size: 1.5rem;
+    height: 140px;
+}
+
+#news {
+    border-radius: 25px;
+    border: 2px solid black;
+    padding: 20px; 
+    background: var(--bg-main);
+    font-size: 1.2rem;
+    text-align: left;
+}
+
 .nobord img {
     border: none;
     box-shadow: none;
@@ -793,8 +815,6 @@ body {
 .gameimg-container .btn:hover {
   color: white;
 }
-
-.nav-detach-point {}
 
 .date {
     font: 1rem/1.2 'Roboto Mono', monospace;

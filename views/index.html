@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>WNN Mashup</title>
+    <title>TFN Mashup</title>
     <meta charset="UTF-8">
-    <meta name="description" content="A project for.">
+    <meta name="description" content="A Temperature, Random Number Fact, and News API Mashup.">
     <meta name="keywords" content="HTML,CSS">
     <meta name="author" content="Tom Hunter">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS Styles -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
     
     <!-- Favicon -->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Guntur:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
 </header>
 <section class="d-flex justify-content-center align-items-center vh-27 bg-main nav-detach-point">
   <h1 class="text-center h12 notmain">Tom Hunter
-    <span class="d-block subtitle-colour h3">Weather/Number/News Mashup<span class="blinker"></span></span>
+    <span class="d-block subtitle-colour h3">Temperature/Fact/News Mashup<span class="blinker"></span></span>
   </h1>
 </section>
     
@@ -52,32 +52,68 @@
 <section class="flex-column vh-main bg-sub">
 
    <div class="d-flex justify-content-center align-items-center flex-grow-1 projectgap">
-    <span class="d-block title-colour h3">TFN Mashup</span>
+    <span class="d-block title-colour h3">Temperature-Fact Generator</span>
   </div>
   <div class="d-flex justify-content-center align-items-center flex-grow-1">
-      <div class="text-blog text-center">
-          Enter your location: 
-          <form action="weather/" method="get">
+      <div class="text text-center">
+          Welcome to the location-based temperature, fact, and news generator. Please enter any city and country below to be told a random 
+          fact based on the temperature of this location. <br><br>
+
+          <!-- Redirect form to prevent changes in the URL -->
+          <iframe width="0" height="0" name="hidden-frame" id="hidden-frame"></iframe>
+
+          <form target="hidden-frame">
             City: 
-            <input type="text" name="city" placeholder="Pick a city..." required/><br><br>
+            <input type="text" id="city" name="city" placeholder="Pick a city..." required/><br><br>
             Country:
-            <input type="text" name="country" placeholder="Pick a country..." required/><br><br>
+            <input type="text" id="country" name="country" placeholder="Pick a country..." required/><br><br>
             Units:
             <input type="radio" id="c" name="units" value="M">
             <label for="c">C</label>
             <input type="radio" id="f" name="units" value="I">
             <label for="f">F</label><br><br>
-            <button type="submit">Submit</button>
+            <div class="button-container">
+              <button id="factButton" class="submit button -blue center">Submit Location</button>
+            </div>
           </form>
       </div>
   </div>
-    
-  <div class="d-flex justify-content-center align-items-center flex-grow-1 projectgap">
-    <span class="d-block title-colour h3">WNN Mashup</span>
-  </div>
+
   <div class="d-flex justify-content-center align-items-center flex-grow-1">
-      <div class="text-blog text-center">
-          Hello testing
+      <textarea class="text text-center fact-text" id="fact">Your temperature and fact will go here!
+      </textarea>
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center flex-grow-1">
+      <div class="text text-center fact-text">
+        Please edit the above text for keywords, then submit to search for related news articles when you are ready.        
+        <div class="button-container">
+          <button id="newsButton" class="submit button -blue center">News Search</button>
+        </div>
+
+        <div id="news">
+          News articles based on this fact:
+          <div class="justify-content-center align-items-center text-list-margin tinygap">
+            <ul class="text-list text-small">
+              <li>A</li>
+              <li>B</li>
+              <li>C</li>
+              <li>D</li>
+            </ul>  
+          </div>
+        </div>
+      </div>
+  </div>
+
+  
+
+  <div class="d-flex justify-content-center align-items-center flex-grow-1 projectgap">
+    <span class="d-block title-colour h3">Direct RFG</span>
+  </div>
+  <div class="d-flex justify-content-center align-items-center flex-grow-1 gapbottom">
+      <div class="text text-center">
+          Already know your temperature? Just want some random facts already? Enter a number (that isn't too large or negative) 
+          and you might learn something.<br><br>
           <form action="/number" method="get">
               <input type="number" name="num" value="0" required />
               <input type="submit" value="Submit" /> 
@@ -89,6 +125,9 @@
 <!-- Contact -->
     
 <section class="d-flex flex-column justify-content-center align-items-center vh-27 position-relative bg-main" id="contact">
+  <h3 class="h3 tinygap">Tom Hunter</h3>
+  <a class="title-colour h4">n10235736</a>
+
     <!--
     <h3 class="h3">Let's get in touch!</h3>
     <a href="mailto:tomhunter.dev@gmail.com" class="title-colour h3">tomhunter.dev@gmail.com</a>
@@ -101,6 +140,7 @@
     -->
 </section>
     
+<script src="/javascripts/submit.js"></script>
 <script>
     const scrollDown = document.querySelector(".scroll-down");
     const homeScreen = document.querySelectorAll('.nav-detach-point')[0];
