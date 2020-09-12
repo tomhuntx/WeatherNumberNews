@@ -2,18 +2,17 @@
 const express = require('express')
 const router = express.Router()
 const http = require('http');
-const cons = require('consolidate');
 
 // Output values
 var articleCount = 0;
 var report = "";
 
 // News router search
-router.get('/', function (req, res) {
+router.get('/:text', function (req, res) {
 
     // Set options
-    const options = createOptions(req.query.q);
-    
+    const options = createOptions(req.params.text);
+
     // Connect to newsapi
     const newsReq = http.request(options, function(newsRes) {
         var output = "";
@@ -24,13 +23,13 @@ router.get('/', function (req, res) {
         });
 
         // Create a page with its contents
-        newsRes.on('end',function() {           
+        newsRes.on('end', function() {           
             //res.writeHead(newsRes.statusCode, {'content-type': 'text/html'});
 
             var input = "";
 
             // Check if input is empty or whitespace
-            if (!req.query.q || !req.query.q.trim()) {
+            if (!req.params.text || !req.params.text.trim()) {
                 input = -1;
             }
             else {
@@ -39,7 +38,6 @@ router.get('/', function (req, res) {
 
             // Check if the data was able to be parsed
             if (input != -1) {
-
                 // Write the page and end the request
                 res.send(input);
                 //res.write(s);
@@ -56,7 +54,7 @@ router.get('/', function (req, res) {
         }); 
     });
 
-    // Error handling
+    // Debug error handling
     newsReq.on('error', (e) => {         
         console.error(e);     
     }); 
@@ -70,21 +68,19 @@ function createOptions(query) {
     // Replace spaces with underscores (will be removed after processing)
     query = query.replace(/\s/g, "+");
 
-    // Save temperature units
-    //tempType = units;
-
     const options = {         
         hostname: 'newsapi.org',         
         port: 80,         
         path: '/v2/everything?',         
-        method: 'GET'    
+        method: 'GET',
+        json: true
     } 
     
     const str = 'q=' + query +
                 '&sortBy=popularity' +
                 '&apiKey=' + '2c81e38cd1b24b08aa59f06e934d5486';
 
-    options.path += str;     
+    options.path += str; 
     return options; 
 }
 
@@ -93,21 +89,18 @@ function parseNews(toparse) {
     let s = "";
     var json;
 
-    /*
-    // Try to parse
     try {
         json = JSON.parse(toparse);
     }
     // Catch if it failed to parse
     catch (e) {
-        console.log("Failed to parse.");
+        console.log("Failed to parse:" + e);
         return -1;
     }
 
-    s += json;
-    */
+    console.log(json);
 
-    s += toparse;
+    s += json;
 
     /*
     // Get and set the suburb name

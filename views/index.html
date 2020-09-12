@@ -43,7 +43,7 @@
 </header>
 <section class="d-flex justify-content-center align-items-center vh-27 bg-main nav-detach-point">
   <h1 class="text-center h12 notmain">Tom Hunter
-    <span class="d-block subtitle-colour h3">Temperature/Fact/News Mashup<span class="blinker"></span></span>
+    <span class="d-block subtitle-colour h3">Temperature/Fact/News Mashup
   </h1>
 </section>
     
@@ -80,8 +80,8 @@
   </div>
 
   <div class="d-flex justify-content-center align-items-center flex-grow-1">
-      <textarea class="text text-center fact-text" id="fact">Your temperature and fact will go here!
-      </textarea>
+      <textarea class="text text-center fact-text" id="result" oninput="myFunction()" onchange="UpdateText()"
+      >Your temperature and fact will appear in this editable textbox.</textarea>
   </div>
 
   <div class="d-flex justify-content-center align-items-center flex-grow-1">

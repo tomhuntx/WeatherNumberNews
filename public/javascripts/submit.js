@@ -7,38 +7,7 @@
 
 // Add string info as content to webpage
 
-/*
-.then((data) => {
-  const parent = event.target.parentElement;
-  const p = document.createElement("p");
-  p.textContent = data.summary;
-  parent.append(p);
-})*/
 
-/*
-async function getFacts() {
-  
-  var city = document.getElementById("city").value;
-  var country = document.getElementById("country").value;
-  var units = "M";
-
-  var a = await fetch(`/fact/${country}/${city}/${units}`)
-    .then((data) => {
-      console.log("a");
-      const factText = document.getElementById("fact");
-      factText.textContent = data;
-      console.log(data);
-      alert(data.json());
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-
-  alert(a);
-}*/
-
-// function call returns a promise (expected key string ex."Zftx5a")
-//trailer(id, function(result){return result;})
 
 function GetFacts() {
   // Get city and country values
@@ -55,8 +24,9 @@ function GetFacts() {
   }
 
   // Query weather.js based on these three variables
-  fetch(`/weather/${country}/${city}/${units}`).then(res =>
-    res.json().then(data => {
+  fetch(`/weather/${country}/${city}/${units}`)
+    .then(res => res.json()
+    .then(data => {
 
       // Debug alert stringified data
       //alert(JSON.stringify(data, null));
@@ -65,8 +35,7 @@ function GetFacts() {
       //alert(data.weather);
 
       // Set the fact text to the fact
-      const factText = document.getElementById("fact");
-      factText.textContent = data.weather;
+      document.getElementById("result").textContent = data.weather;
 
       // Remove hidden id from new section
       document.getElementById("hidden-section").removeAttribute("hidden-section");
@@ -79,12 +48,17 @@ function GetFacts() {
 
 function GetNews() { 
     // Get fact textbox text
-    var text = document.getElementById("fact").textContent;
+    var text = document.getElementById("result").value;
+
+    // Debug: Alert the search text
+    //alert(text);
 
     // Query news.js based on these three variables
-    fetch(`/news?q=${text}`).then(res =>
-      res.json().then(data => {
+    fetch(`/news/${text}`)
+        .then(res => res.json()
+        .then(data => {
 
+        alert("data:" + data.news);
         // Debug alert stringified data
         //alert(JSON.stringify(data, null));
 
@@ -92,11 +66,10 @@ function GetNews() {
         //alert(data.news);
 
         // Set the fact text to the fact
-        const factText = document.getElementById("news");
-        factText.textContent = data.news;
+        var newsTextBox = document.getElementById("news");
+        newsTextBox.value = data.news;
 
         // Remove hidden id from new section
-        document.getElementById("hidden-section").removeAttribute("hidden-section");
       })    
       .catch((error) => {
         console.log(error);
