@@ -80,44 +80,30 @@
   </div>
 
   <div class="d-flex justify-content-center align-items-center flex-grow-1">
-      <textarea class="text text-center fact-text" id="result" oninput="myFunction()" onchange="UpdateText()"
-      >Your temperature and fact will appear in this editable textbox.</textarea>
+      <p class="text text-center fact-text result" id="temp-result">
+        Your temperature will appear in this text box.</p>
   </div>
 
-  <div class="d-flex justify-content-center align-items-center flex-grow-1">
+  <div class="d-flex justify-content-center align-items-center flex-grow-1 tinygap">
+    <textarea class="text text-center fact-text result" id="fact-result" 
+    oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+    >Your fact will appear in this EDITABLE text box.</textarea>
+  </div>
+
+  <div class="d-flex justify-content-center align-items-center flex-grow-1 projectgap">
+    <span class="d-block title-colour h3">Fact-News Generator</span>
+  </div>
+  <div class="d-flex justify-content-center align-items-center flex-grow-1 gapbottom">
       <div class="text text-center fact-text">
-        Please edit the above text for keywords, then submit to search for related news articles when you are ready.        
+        Please edit the above fact text, then submit to search for related news articles when you are ready.        
         <div class="button-container">
           <button id="newsButton" class="submit button -blue center">News Search</button>
         </div>
-
         <div id="news">
-          News articles based on this fact:
-          <div class="justify-content-center align-items-center text-list-margin tinygap">
-            <ul class="text-list text-small">
-              <li>A</li>
-              <li>B</li>
-              <li>C</li>
-              <li>D</li>
-            </ul>  
-          </div>
+          <div class="justify-content-center align-items-center text-list-margin tinygap " id="newstext">
+            News articles will appear here.
+          </div>          
         </div>
-      </div>
-  </div>
-
-  
-
-  <div class="d-flex justify-content-center align-items-center flex-grow-1 projectgap">
-    <span class="d-block title-colour h3">Direct RFG</span>
-  </div>
-  <div class="d-flex justify-content-center align-items-center flex-grow-1 gapbottom">
-      <div class="text text-center">
-          Already know your temperature? Just want some random facts already? Enter a number (that isn't too large or negative) 
-          and you might learn something.<br><br>
-          <form action="/number" method="get">
-              <input type="number" name="num" value="0" required />
-              <input type="submit" value="Submit" /> 
-          </form>
       </div>
   </div>
 </section>

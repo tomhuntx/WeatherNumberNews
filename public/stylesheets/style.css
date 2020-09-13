@@ -727,13 +727,22 @@ body {
     display: none;
 }
 
-#result {
+#temp-result {
     border-radius: 25px;
     border: 2px solid black;
     padding: 20px; 
     background: var(--bg-main);
-    font-size: 1.5rem;
-    height: 140px;
+    font-size: 1.2rem;
+    height: 100px;
+}
+
+#fact-result {
+    border-radius: 25px;
+    border: 2px solid black;
+    padding: 20px; 
+    background: #24395e;
+    font-size: 1.6rem;
+    height: 70px;
 }
 
 #news {
@@ -743,6 +752,10 @@ body {
     background: var(--bg-main);
     font-size: 1.2rem;
     text-align: left;
+}
+
+#newstext {
+    padding-bottom: 20px;
 }
 
 .nobord img {

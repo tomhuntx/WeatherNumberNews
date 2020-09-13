@@ -9,7 +9,7 @@
 
 
 
-function GetFacts() {
+function GetTemperature() {
   // Get city and country values
   var city = document.getElementById("city").value;
   var country = document.getElementById("country").value;
@@ -23,6 +23,11 @@ function GetFacts() {
     units = "M";
   }
 
+  // Don't execute fetch if no text is given
+  if (!city || !city.trim() || !country || !country.trim()) {
+    return -1;
+  }
+
   // Query weather.js based on these three variables
   fetch(`/weather/${country}/${city}/${units}`)
     .then(res => res.json()
@@ -31,14 +36,47 @@ function GetFacts() {
       // Debug alert stringified data
       //alert(JSON.stringify(data, null));
 
-      // Debug alert full
+      // Debug alert full weather data
       //alert(data.weather);
 
-      // Set the fact text to the fact
-      document.getElementById("result").textContent = data.weather;
+      // Check if returned string (error) or correct array
+      if (typeof data.weather === 'string') {
+        document.getElementById("temp-result").innerHTML = data.weather;
+      }
+      else {
+          GetFact(data.weather[1]);
 
-      // Remove hidden id from new section
-      document.getElementById("hidden-section").removeAttribute("hidden-section");
+          // Set the fact text to the fact
+          document.getElementById("temp-result").innerHTML = data.weather[0];
+        }
+    })    
+    .catch((error) => {
+      console.log(error);
+    })
+  );
+}
+
+// Get AND Set the fact from a given temperature
+function GetFact(temperature) {
+
+  // Query weather.js based on these three variables
+  fetch(`/number/${temperature}`)
+    .then(res => res.json()
+    .then(data => {
+
+      // Debug alert stringified data
+      //alert(JSON.stringify(data, null));
+
+      // Debug alert fact
+      //alert(data.fact);
+
+      // Set the fact text to the fact
+      var factText = document.getElementById("fact-result");
+      factText.textContent = data.fact;
+
+      // Update textarea size
+      factText.style.height = "";
+      factText.style.height = factText.scrollHeight + "px";
     })    
     .catch((error) => {
       console.log(error);
@@ -47,29 +85,35 @@ function GetFacts() {
 }
 
 function GetNews() { 
-    // Get fact textbox text
-    var text = document.getElementById("result").value;
+    // Get textbox text and limit it to a length of 19
+    var textAreaText = document.getElementById("fact-result").value;
+    var trimmedText = textAreaText.substring(0, 18);
 
     // Debug: Alert the search text
-    //alert(text);
+    //alert(trimmedText);
 
-    // Query news.js based on these three variables
-    fetch(`/news/${text}`)
+    // Query news.js based on the given text
+    fetch(`/news/${trimmedText}`)
         .then(res => res.json()
         .then(data => {
 
-        alert("data:" + data.news);
-        // Debug alert stringified data
-        //alert(JSON.stringify(data, null));
+        var finalText = "";
 
-        // Debug alert full
+        // Check if an error is returned and print the error if so
+        if (data.error) {
+          finalText = data.error;
+        }
+        // Otherwise, build a list of news articles from the retrieved data
+        else {
+          finalText = data.news;
+        }
+        
+        // Debug: alert all data
         //alert(data.news);
 
-        // Set the fact text to the fact
-        var newsTextBox = document.getElementById("news");
-        newsTextBox.value = data.news;
-
-        // Remove hidden id from new section
+        // Set the list (or error) to the html of a set section
+        var newsTextBox = document.getElementById("newstext");
+        newsTextBox.innerHTML = finalText;
       })    
       .catch((error) => {
         console.log(error);
@@ -78,5 +122,5 @@ function GetNews() {
 }
 
 
-document.getElementById("factButton").addEventListener("click", GetFacts);
+document.getElementById("factButton").addEventListener("click", GetTemperature);
 document.getElementById("newsButton").addEventListener("click", GetNews);

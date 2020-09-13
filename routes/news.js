@@ -2,10 +2,11 @@
 const express = require('express')
 const router = express.Router()
 const http = require('http');
+const cons = require('consolidate');
 
 // Output values
-var articleCount = 0;
-var report = "";
+var articleCount = 20;
+var output = "";
 
 // News router search
 router.get('/:text', function (req, res) {
@@ -15,42 +16,43 @@ router.get('/:text', function (req, res) {
 
     // Connect to newsapi
     const newsReq = http.request(options, function(newsRes) {
-        var output = "";
+        let data = "";
 
         // Get the entire website and set it as the output
         newsRes.on('data', function (chunk) {
-            output = chunk;
+            data += chunk;
         });
 
         // Create a page with its contents
         newsRes.on('end', function() {           
             //res.writeHead(newsRes.statusCode, {'content-type': 'text/html'});
 
-            var input = "";
-
             // Check if input is empty or whitespace
             if (!req.params.text || !req.params.text.trim()) {
-                input = -1;
+                output = -1;
             }
             else {
-                input = parseNews(output);
+                output = parseNews(data);
             }
 
             // Check if the data was able to be parsed
-            if (input != -1) {
+            if (output != -1) {
                 // Write the page and end the request
-                res.send(input);
-                //res.write(s);
-                res.end();
+                res.send({ news: output });
             }
             // If not, mark the output as an error
             else {
-                report = "There was a problem finding news. " +
-                         "Please try again with less or less obscure keywords.";
+                output = "There was a problem finding news. " +
+                         "Please try again with fewer or less obscure keywords.";
+
+                res.send({ error: output });
             }
 
             // Debug: log the report
-            console.log(report);
+            //console.log(output);
+            
+            // End the request
+            res.end();
         }); 
     });
 
@@ -77,69 +79,95 @@ function createOptions(query) {
     } 
     
     const str = 'q=' + query +
-                '&sortBy=popularity' +
-                '&apiKey=' + '2c81e38cd1b24b08aa59f06e934d5486';
+                '&sortBy=relevancy' +
+                '&apiKey=2c81e38cd1b24b08aa59f06e934d5486';
 
     options.path += str; 
     return options; 
 }
 
 
-function parseNews(toparse) {     
-    let s = "";
-    var json;
+function parseNews(toparse) {    
+    let json;
 
     try {
         json = JSON.parse(toparse);
     }
     // Catch if it failed to parse
     catch (e) {
-        console.log("Failed to parse:" + e);
+        console.log("Failed to parse: " + e);
         return -1;
     }
 
-    console.log(json);
+    // Debug: Total results
+    //let totalArticles = json.totalResults;
+    //console.log(totalArticles);
 
-    s += json;
-
-    /*
-    // Get and set the suburb name
-    s += json.data[0].city_name + ", ";
-
-    // Split "Country/City" into separate strings
-    var location = json.data[0].timezone;
-    var mid = location.indexOf("/");  
-    var country = location.substr(0, mid);
-    var city = location.substr(mid + 1);  
-
-    // Remove underscores with spaces (New_York becomes New York)
-    country = country.replace(/_/g, " ");
-    city = city.replace(/_/g, " ");
-
-    // Only include city name if different from area name (to prevent repeating)
-    if (city != json.data[0].city_name) {
-        s += city + ", ";
+    if (!json || !json.articles || json.articles.length == 0) {
+        return -1;
     }
 
-    // Add the country name after the city name
-    s += country + " is ";
+    let newsArticles = [];
+    let creator = "";
+    let articleName = "";
+    let url = "";
+    let length = json.articles.length;
 
-    // Get and set the temperature
-    temperature = json.data[0].temp;
-    temperature = Math.round(temperature);
-    s += temperature;
-
-    if (tempType == "I") {
-        s += "&deg;F."
+    // Set max articles to set articlecount
+    if (length > articleCount) {
+        length = articleCount;
     }
-    else {
-        s += "&deg;C."
-    }
-    */
+    
+    // Loop through the visible articles
+    for (let i = 0; i < length; i++) {
 
-    // Save and return the result
-    report = s;
-    return s; 
+        // Check that source and name of source exists
+        if (json.articles[i].source && json.articles[i].source.name) {
+            // Set name of source
+            creator = json.articles[i].source.name + ": ";
+        }
+        else {
+            creator = "Unknown Creator";
+        }
+
+        // Check that the article has a title
+        if (json.articles[i].title != null) {
+            // Set title of article
+            articleName = json.articles[i].title;
+        }
+        else {
+            articleName = "Unnamed";
+        }
+
+        // Check that the article has a url
+        if (json.articles[i].url != null) {
+            // Set the url
+            url = json.articles[i].url;
+        }
+        else {
+            url = "";
+        }
+
+        // Push article and url info to the array
+        newsArticles.push([creator, articleName, url]);
+    }
+    
+    var articleText = "";
+
+    // Build a html list of news articles from the retrieved data
+    articleText += '<ol class="text-list text-small">';
+    for (let i = 0; i < newsArticles.length; i++) {
+      articleText += "<li>";
+      articleText += newsArticles[i][0];
+      articleText += `<a href="${newsArticles[i][2]}" target="_blank" >
+                      ${newsArticles[i][1]}</a>`;
+      articleText += "</li>";
+
+    }
+    articleText += '</ol>';
+
+    // Return the full array
+    return articleText; 
 }
   
 module.exports = router;

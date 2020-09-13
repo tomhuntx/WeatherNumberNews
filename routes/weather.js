@@ -6,10 +6,10 @@ const http = require('http');
 var temperature = 0;
 var report = "";
 var tempType = "C";
+var reportTemp = [];
 
 // Get fact
 var fact = "Fact not found!";
-
 
 // Weather JSON search
 router.get('/:country/:city/:units', function (req, res)  {
@@ -31,21 +31,22 @@ router.get('/:country/:city/:units', function (req, res)  {
         waetRes.on('end',function() {           
             //res.writeHead(waetRes.statusCode, {'content-type': 'text/html'});
 
-            var temp = "";
+            reportTemp = [];
 
             // Check if input is empty or whitespace
             if (!req.params.city || !req.params.city.trim() || !req.params.country || 
                 !req.params.country.trim()) {
-                temp = -1;
+                report = -1;
             }
             else {
-                temp = parseTemperature(output);
+                report = parseTemperature(output);
             }
 
             // Check if the data was able to be parsed
-            if (temp != -1) {
+            if (report != -1) {
                 // Generate fact from temperature
-                NumberFactGenerator(temperature, temp, res);
+                reportTemp = [report, temperature];
+                res.send({ weather: reportTemp });
             }
             // If not, mark the output as an error
             else {
@@ -90,7 +91,7 @@ function createOptions(city, country, units) {
     const str = '&city=' + city +     
                 '&country=' + country +    
                 '&units=' + units + 
-                '&key=' + 'e356802b7eb143b09940bc0d88115c1f';
+                '&key=e356802b7eb143b09940bc0d88115c1f';
 
     options.path += str;     
     return options; 
@@ -135,7 +136,7 @@ function parseTemperature(toparse) {
     // Get and set the temperature
     temperature = json.data[0].temp;
     temperature = Math.round(temperature);
-    s += temperature;
+    s += "<strong>" + temperature + "</strong>";
 
     if (tempType == "I") {
         s += "°F."
@@ -184,21 +185,6 @@ function NumberFactGenerator(number, report, res) {
 
     // End the request
     numReq.end();
-}
-
-function createPage(givenReport, fact) {
-
-    //Headers and opening body, then main content and close     
-    const str = '<!DOCTYPE html>' +         
-                '<html><head><title>Weather Report</title></head>' +         
-                '<body>' + '<h2>Result</h2>' +         
-                givenReport + " " + fact + 
-                '<form action="/news" method="get">' +
-                `<input type="text" name="q" value="${fact}" required />` +
-                '<input type="submit" value="Submit" /></form>' +
-                '</body></html>';     
-
-    return str; 
 }
 
 function createNumOptions(number) {
