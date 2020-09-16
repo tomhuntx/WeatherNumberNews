@@ -1,9 +1,12 @@
 {
-  "name": "weathernumbernews",
-  "version": "0.0.0",
+  "name": "tfn-mashup",
+  "version": "1.0.0",
   "private": true,
+  "description": "Assignment 1 for IGB432",
+  "author": "Tom-Hunter",
+  "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node app.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

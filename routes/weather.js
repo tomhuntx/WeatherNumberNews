@@ -136,7 +136,7 @@ function parseTemperature(toparse) {
     // Get and set the temperature
     temperature = json.data[0].temp;
     temperature = Math.round(temperature);
-    s += "<strong>" + temperature + "</strong>";
+    s += "<span class='tfn-bold'>" + temperature + "</span>";
 
     if (tempType == "I") {
         s += "°F."

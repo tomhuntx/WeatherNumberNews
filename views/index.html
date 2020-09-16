@@ -73,7 +73,7 @@
             <input type="radio" id="f" name="units" value="I">
             <label for="f">F</label><br><br>
             <div class="button-container">
-              <button id="factButton" class="submit button -blue center">Submit Location</button>
+              <button id="factButton" class="button button-big -blue center">Submit Location</button>
             </div>
           </form>
       </div>
@@ -90,14 +90,19 @@
     >Your fact will appear in this EDITABLE text box.</textarea>
   </div>
 
-  <div class="d-flex justify-content-center align-items-center flex-grow-1 projectgap">
+  <div class="d-flex justify-content-center align-items-center flex-grow-1 textgap">
     <span class="d-block title-colour h3">Fact-News Generator</span>
   </div>
   <div class="d-flex justify-content-center align-items-center flex-grow-1 gapbottom">
       <div class="text text-center fact-text">
-        Please edit the above fact text, then submit to search for related news articles when you are ready.        
+        Please edit the above fact text, then submit to search for related news articles when you are ready. 
+        <br><br>Please note that only the LAST few words will be used in the search (20 characters).        
         <div class="button-container">
-          <button id="newsButton" class="submit button -blue center">News Search</button>
+          <button id="newsButton" class="button button-big -blue center">News Search</button>
+        </div>
+        You may also generate a new random number fact (0-100) and search for news based on it:
+        <div class="button-container">
+          <button id="newFactButton" class="button -blue center">Random Fact Search</button>
         </div>
         <div id="news">
           <div class="justify-content-center align-items-center text-list-margin tinygap " id="newstext">

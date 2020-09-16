@@ -159,7 +159,7 @@ function parseNews(toparse) {
     for (let i = 0; i < newsArticles.length; i++) {
       articleText += "<li>";
       articleText += newsArticles[i][0];
-      articleText += `<a href="${newsArticles[i][2]}" target="_blank" >
+      articleText += `<a class="text-links" href="${newsArticles[i][2]}" target="_blank" >
                       ${newsArticles[i][1]}</a>`;
       articleText += "</li>";
 

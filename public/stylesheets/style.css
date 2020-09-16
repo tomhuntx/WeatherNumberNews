@@ -733,7 +733,7 @@ body {
     padding: 20px; 
     background: var(--bg-main);
     font-size: 1.2rem;
-    height: 100px;
+    height: 110px;
 }
 
 #fact-result {
@@ -745,6 +745,14 @@ body {
     height: 70px;
 }
 
+textarea {
+    resize: none;
+}
+
+#city, #country {
+    font-size: 18px;
+}
+
 #news {
     border-radius: 25px;
     border: 2px solid black;
@@ -752,6 +760,11 @@ body {
     background: var(--bg-main);
     font-size: 1.2rem;
     text-align: left;
+}
+
+.tfn-bold {
+    color: #0099ff;
+    font-weight: 600;
 }
 
 #newstext {
@@ -879,6 +892,13 @@ body {
     flex: 0 0 160px;
 
     box-shadow: 2px 5px 10px var(--bg-main);
+}
+
+.button-big {
+    margin: 20px;
+    padding: 10px 12px;
+    font-size: 18px;
+    flex: 0 0 200px;
 }
 
 .button:hover {
